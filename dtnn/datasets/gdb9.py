@@ -63,17 +63,17 @@ def load_data(dbpath):
     tar.extractall(raw_path)
     tar.close()
 
-    prop_names = ['rcA', 'rcB', 'rcC', 'mu', 'alpha', 'homo', 'lumo',
-                  'gap', 'r2', 'zpve', 'energy_U0', 'energy_U', 'enthalpy_H',
-                  'free_G', 'Cv']
-    conversions = [1., 1., 1., 1., Bohr ** 3 / Ang ** 3,
-                   Hartree / eV, Hartree / eV, Hartree / eV,
-                   Bohr ** 2 / Ang ** 2, Hartree / eV,
-                   Hartree / eV, Hartree / eV, Hartree / eV,
-                   Hartree / eV, 1.]
-
     logging.info('Parse xyz files...')
     with connect(dbpath) as con:
+        prop_names = ['rcA', 'rcB', 'rcC', 'mu', 'alpha', 'homo', 'lumo',
+                      'gap', 'r2', 'zpve', 'energy_U0', 'energy_U', 'enthalpy_H',
+                      'free_G', 'Cv']
+        conversions = [1., 1., 1., 1., Bohr ** 3 / Ang ** 3,
+                       Hartree / eV, Hartree / eV, Hartree / eV,
+                       Bohr ** 2 / Ang ** 2, Hartree / eV,
+                       Hartree / eV, Hartree / eV, Hartree / eV,
+                       Hartree / eV, 1.]
+
         for i, xyzfile in enumerate(os.listdir(raw_path)):
             xyzfile = os.path.join(raw_path, xyzfile)
 

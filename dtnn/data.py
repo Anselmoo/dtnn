@@ -23,7 +23,7 @@ def split_ase_db(asedb, dstdir, partitions, selection=None):
     ids = np.random.permutation(ids)
     n_rows = len(ids)
 
-    r = (0. < partitions) * (partitions < 1.)
+    r = (partitions > 0.) * (partitions < 1.)
     partitions[r] *= n_rows
     partitions = partitions.astype(np.int)
 
@@ -52,10 +52,7 @@ def split_ase_db(asedb, dstdir, partitions, selection=None):
                 split_dict[pid] = ids[offset:offset + p]
                 for i in ids[offset:offset + p]:
                     row = con.get(int(i))
-                    if hasattr(row, 'data'):
-                        data = row.data
-                    else:
-                        data = None
+                    data = row.data if hasattr(row, 'data') else None
                     dstcon.write(row.toatoms(),
                                  key_value_pairs=row.key_value_pairs,
                                  data=data)
@@ -191,10 +188,7 @@ class ASEDataProvider(LeapDataProvider):
         # get data base size
         with connect(self.asedb) as con:
             n_rows = con.count(self.selection)
-        if self.block_size is None:
-            block_size = n_rows
-        else:
-            block_size = self.block_size
+        block_size = n_rows if self.block_size is None else self.block_size
         n_blocks = int(np.ceil(n_rows / block_size))
 
         # shuffling

@@ -44,19 +44,15 @@ def interatomic_distances(positions, cell, pbc, cutoff):
         rpos = tf.expand_dims(rpos, 0)
         positions = tf.expand_dims(positions, 1)
 
-        euclid_dist = tf.sqrt(
+        return tf.sqrt(
             tf.reduce_sum(tf.square(positions - rpos),
                           reduction_indices=3))
-        return euclid_dist
 
 
 def site_rdf(distances, cutoff, step, width, eps=1e-5,
              use_mean=False, lower_cutoff=None):
     with tf.variable_scope('srdf'):
-        if lower_cutoff is None:
-            vrange = cutoff
-        else:
-            vrange = cutoff - lower_cutoff
+        vrange = cutoff if lower_cutoff is None else cutoff - lower_cutoff
         distances = tf.expand_dims(distances, -1)
         n_centers = np.ceil(vrange / step)
         gap = vrange - n_centers * step
