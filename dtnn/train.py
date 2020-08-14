@@ -147,7 +147,7 @@ def early_stopping(model, cost_fcn, optimizer,
             logging.info('Starting at iteration ' +
                          str(start_iter) + ' / ' + str(n_iterations))
             last_best = start_iter
-            for i in range(start_iter, n_iterations):
+            for i in range(last_best, n_iterations):
                 if i % checkpoint_interval == 0:
                     chkpt_saver.save(sess, chkpt, i)
                     logging.info('Saved checkpoint at iteration %d / %d',

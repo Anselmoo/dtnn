@@ -87,7 +87,7 @@ class DTNN(Model):
         fC = L.dense(C, self.n_factors, use_bias=True)
 
         reuse = None
-        for i in range(self.n_interactions):
+        for _ in range(self.n_interactions):
             tmp = tf.expand_dims(X, 1)
 
             fX = L.dense(tmp, self.n_factors, use_bias=True,

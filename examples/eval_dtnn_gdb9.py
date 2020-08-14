@@ -52,10 +52,9 @@ def evaluate(args):
 def predict(dbpath, features, sess, y):
     U0 = []
     U0_pred = []
-    count = 0
     with connect(dbpath) as conn:
         n_structures = conn.count()
-        for row in conn.select():
+        for count, row in enumerate(conn.select()):
             U0.append(row['U0'])
 
             at = row.toatoms()
@@ -69,7 +68,6 @@ def predict(dbpath, features, sess, y):
             U0_pred.append(U0_p)
             if count % 1000 == 0:
                 print(str(count) + ' / ' + str(n_structures))
-            count += 1
     return U0, U0_pred
 
 

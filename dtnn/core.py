@@ -109,8 +109,7 @@ class Model(object):
         logging.info('Restoring ' + chkpt)
 
         self.saver.restore(sess, chkpt)
-        start_iter = int(chkpt.split('-')[-1])
-        return start_iter
+        return int(chkpt.split('-')[-1])
 
     def get_output(self, features, is_training, batch_size=None,
                    num_batch_threads=1):
